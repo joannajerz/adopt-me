@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import pet, {ANIMALS} from "@frontendmasters/pet";
-import useDropdown from  "./useDropdown"
-import { async } from 'q';
+import Results from "./Results"
+import useDropdown from  "./useDropdown";
+
 
 
 const SearchParams = () => {
@@ -12,13 +13,13 @@ const SearchParams = () => {
     const [pets, setPets] = useState([]);
 
     async function requestPets(){
-        const {animal} = await pet.animals({
+        const {animals} = await pet.animals({
             location,
             breed,
             type: animal
         });
 
-        setPets(animal ||[]);
+        setPets(animals ||[]);
     }
 
 
@@ -50,6 +51,7 @@ const SearchParams = () => {
                 <BreedDropdown/>
                 <button>Submit</button>
             </form>
+            <Results pets = {pets}/>
         </div>
     )
 };
