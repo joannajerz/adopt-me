@@ -15,7 +15,7 @@ return(
     </header>
     <Router>
     <SearchParams path="/"/>
-    <Details path="/details/:d"/>
+    <Details path="/details/:id"/>
     </Router>
     </div>
     </React.StrictMode>
