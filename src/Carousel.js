@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 
 class Carousel extends React.Component{
@@ -26,6 +27,7 @@ render(){
             <img src={photos[active]} alt="animal"/>
             <div className="carousel-smaller">
                 {this.props.media.map((photo, index) => (
+// eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
                     <img
                     key={photo.large}
                     onClick={this.handleIndexClick}
