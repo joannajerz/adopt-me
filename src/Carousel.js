@@ -5,23 +5,37 @@ class Carousel extends React.Component{
         photos: [],
         active: 0
     };
+static getDerivedStateFromProps({media}){
+    let photos=['https://placeorg.com/600/600'];
+    if(media.length){
+        photos = media.map(({large})=> large);
+    }
+    return {photos};
+}
+handleIndexClick = e => {
+this.setState({
+    active: +e.target.dataset.index 
+}
+
+)
+}
 render(){
     const{photos, active} = this.state;
     return (
         <div className="carousel">
             <img src={photos[active]} alt="animal"/>
             <div className="carousel-smaller">
-                {photos.map((photo, index) => (
+                {this.props.media.map((photo, index) => (
                     <img
-                    key={photo}
+                    key={photo.large}
                     onClick={this.handleIndexClick}
                     data-index={index}
-                    src={photo}
+                    src={photo.large}
                     className={index===active ? "active" : ""}
                     alt = "animal thumbnail"
                     />
-                );
-                );};
+                )
+                )}
             </div>
         </div>
     );
