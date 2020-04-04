@@ -1,12 +1,16 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from'react';
+import React, {lazy} from'react';
 import pet from '@frontendmasters/pet';
 import {navigate} from '@reach/router';
 import Carousel from './Carousel';
 import ErrorBoundary from './ErrorBoundary';
 import ThemeContext from './ThemeContext';
-import Modal from './Modal';
+import _ from 'lodash'
+import moment from 'moment';
 
+console.log(_, moment)
+
+const Modal = lazy(()=>import( './Modal'));
 class Details extends React.Component {
     state = {loading:true, showModal: false};
 componentDidMount() {

@@ -117,79 +117,220 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
+})({"Pet.js":[function(require,module,exports) {
+"use strict";
 
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = Pet;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _router = require("@reach/router");
+
+var _core = require("@emotion/core");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Pet({
+  name,
+  animal,
+  breed,
+  media,
+  location,
+  id
+}) {
+  let hero = 'http://placeorgi.com/300/300';
+
+  if (media.length) {
+    hero = media[0].small;
   }
 
-  return bundleURL;
+  return (0, _core.jsx)(_router.Link, {
+    to: `/details/${id}`,
+    className: "pet"
+  }, (0, _core.jsx)("div", {
+    className: "image-container"
+  }, (0, _core.jsx)("img", {
+    src: hero,
+    alt: name
+  })), (0, _core.jsx)("div", {
+    className: "info"
+  }, (0, _core.jsx)("h1", null, name), (0, _core.jsx)("h2", null, `${animal} - ${breed} - ${location}`)));
 }
 
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+;
+},{"react":"../node_modules/react/index.js","@reach/router":"../node_modules/@reach/router/es/index.js","@emotion/core":"../node_modules/@emotion/core/dist/core.browser.esm.js"}],"Results.js":[function(require,module,exports) {
+"use strict";
 
-    if (matches) {
-      return getBaseURL(matches[0]);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _Pet = _interopRequireDefault(require("./Pet"));
+
+var _core = require("@emotion/core");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+const Results = ({
+  pets
+}) => {
+  return (0, _core.jsx)("div", {
+    className: "search"
+  }, pets.length === 0 ? (0, _core.jsx)("h1", null, "No Pets Found") : pets.map(pet => (0, _core.jsx)(_Pet.default, {
+    animal: pet.type,
+    key: pet.id,
+    name: pet.name,
+    breed: pet.breeds.primary,
+    media: pet.photos,
+    location: `${pet.contact.address.city}, ${pet.contact.address.state}`,
+    id: pet.id
+  })));
+};
+
+var _default = Results;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","./Pet":"Pet.js","@emotion/core":"../node_modules/@emotion/core/dist/core.browser.esm.js"}],"useDropdown.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _core = require("@emotion/core");
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+const useDropdown = (label, defaultState, options) => {
+  const [state, setState] = (0, _react.useState)(defaultState);
+  const id = `use-dropdown-${label.replace(" ", "").toLowerCase()}`;
+
+  const Dropdown = () => (0, _core.jsx)("label", {
+    htmlFor: id
+  }, label, (0, _core.jsx)("select", {
+    id: id,
+    value: state,
+    onChange: e => setState(e.target.value),
+    onBlur: e => setState(e.target.value),
+    disabled: options.lenght === 0
+  }, (0, _core.jsx)("option", null, "All"), options.map(item => (0, _core.jsx)("option", {
+    key: item,
+    value: item
+  }, item))));
+
+  return [state, Dropdown, setState];
+};
+
+var _default = useDropdown;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","@emotion/core":"../node_modules/@emotion/core/dist/core.browser.esm.js"}],"SearchParams.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _pet = _interopRequireWildcard(require("@frontendmasters/pet"));
+
+var _Results = _interopRequireDefault(require("./Results"));
+
+var _useDropdown = _interopRequireDefault(require("./useDropdown"));
+
+var _ThemeContext = _interopRequireDefault(require("./ThemeContext"));
+
+var _core = require("@emotion/core");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function () { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+const SearchParams = () => {
+  const [location, setLocation] = (0, _react.useState)("Seattle WA");
+  const [breeds, setBreeds] = (0, _react.useState)([]);
+  const [animal, AnimalDropdown] = (0, _useDropdown.default)("Animal", "dog", _pet.ANIMALS);
+  const [breed, BreedDropdown, setBreed] = (0, _useDropdown.default)("Breed", "", breeds);
+  const [pets, setPets] = (0, _react.useState)([]);
+  const [theme, setTheme] = (0, _react.useContext)(_ThemeContext.default);
+
+  async function requestPets() {
+    const {
+      animals
+    } = await _pet.default.animals({
+      location,
+      breed,
+      type: animal
+    });
+    setPets(animals || []);
+  }
+
+  (0, _react.useEffect)(() => {
+    setBreeds([]);
+    setBreed("");
+
+    _pet.default.breeds(animal).then(({
+      breeds
+    }) => {
+      const breedStrings = breeds.map(({
+        name
+      }) => name);
+      setBreeds(breedStrings);
+    }, console.error);
+  }, [animal, setBreed, setBreeds]);
+  return (0, _core.jsx)("div", {
+    className: "search-params"
+  }, (0, _core.jsx)("form", {
+    onSubmit: e => {
+      e.preventDefault();
+      requestPets();
     }
-  }
-
-  return '/';
-}
-
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"../node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
+  }, (0, _core.jsx)("label", {
+    htmlFor: "location"
+  }, "Location", (0, _core.jsx)("input", {
+    id: "location",
+    value: location,
+    placeholder: "location",
+    onChange: e => setLocation(e.target.value)
+  })), (0, _core.jsx)(AnimalDropdown, null), (0, _core.jsx)(BreedDropdown, null), (0, _core.jsx)("label", {
+    htmlFor: "location"
+  }, "Theme", (0, _core.jsx)("select", {
+    value: theme,
+    onChange: e => setTheme(e.target.value),
+    onBlur: e => setTheme(e.target.value)
+  }, (0, _core.jsx)("option", {
+    value: "peru"
+  }, "Peru"), (0, _core.jsx)("option", {
+    value: "darkblue"
+  }, "Dark Blue"), (0, _core.jsx)("option", {
+    value: "chartreuse"
+  }, "Chartreuse"), (0, _core.jsx)("option", {
+    value: "mediumorchid"
+  }, "Medium Orchid"))), (0, _core.jsx)("button", {
+    style: {
+      backgroundColor: theme
     }
+  }, "Submit")), (0, _core.jsx)(_Results.default, {
+    pets: pets
+  }));
+};
 
-    cssTimeout = null;
-  }, 50);
-}
-
-module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"style.css":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+var _default = SearchParams;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","@frontendmasters/pet":"../node_modules/@frontendmasters/pet/index.js","./Results":"Results.js","./useDropdown":"useDropdown.js","./ThemeContext":"ThemeContext.js","@emotion/core":"../node_modules/@emotion/core/dist/core.browser.esm.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -394,4 +535,4 @@ function hmrAcceptRun(bundle, id) {
   }
 }
 },{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/style.e308ff8e.js.map
+//# sourceMappingURL=/SearchParams.95c957bf.js.map
