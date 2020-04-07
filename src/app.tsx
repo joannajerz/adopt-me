@@ -1,6 +1,6 @@
 import React, {useState, lazy, Suspense} from 'react';
 import {render} from 'react-dom';
-import {Router, Link} from '@reach/router'
+import {Router } from '@reach/router'
 import ThemeContext from './ThemeContext'
 import NavBar from './NavBar'
 
@@ -25,5 +25,4 @@ return(
     </React.StrictMode>
 )
 };
-
-render(<App/>, document.getElementById("root"));
+render(<App />, document.getElementById("root"));

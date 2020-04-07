@@ -1,20 +1,20 @@
-import React, { Component } from 'react'
-import { Link} from '@reach/router'
+import React, { Component, ErrorInfo } from 'react'
+import { Link, Redirect} from '@reach/router'
 
 class ErrorBoundary extends Component {
-    state = { hasError: false}
-    static getDerivedStateFromError() {
-        return { hasError: true, redirected: false }; 
+    public state = { hasError: false, redirected: false}
+    public static getDerivedStateFromError() {
+        return { hasError: true }; 
     }
-    componentDidUpdate(){
+    public componentDidUpdate(){
         if (this.state.hasError) {
             setTimeout(() => this.setState({redirected: true}), 5000);
         }
     }
-    componentDidCatch(error, info) {
+    public componentDidCatch(error: Error, info:ErrorInfo) {
         console.error("ErrorBoundary caught an error", error, info);
       }
-      render() {
+      public render() {
           if (this.state.redirected) {
               // eslint-disable-next-line react/jsx-no-undef
               return <Redirect to="/" />;

@@ -1,20 +1,21 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, {lazy} from'react';
-import pet from '@frontendmasters/pet';
-import {navigate} from '@reach/router';
+import React from'react';
+import pet, { Photo } from '@frontendmasters/pet';
+import {navigate, RouteComponentProps} from '@reach/router';
 import Carousel from './Carousel';
 import ErrorBoundary from './ErrorBoundary';
 import ThemeContext from './ThemeContext';
-import _ from 'lodash'
-import moment from 'moment';
+import Modal from './Modal'
 
-console.log(_, moment)
 
-const Modal = lazy(()=>import( './Modal'));
-class Details extends React.Component {
-    state = {loading:true, showModal: false};
-componentDidMount() {
-    pet.animal(this.props.id)
+class Details extends React.Component <RouteComponentProps<{id: string}>>{
+   public state = {loading:true, showModal: false, name: "",animal: "", location: "", description: "", breed: "", media:[] as Photo[], url:"" };
+public componentDidMount() {
+    if (!this.props.id){
+        navigate("/");
+        return;
+    }
+    pet.animal(+this.props.id)
         .then(({animal})=>{
             this.setState({
                     url: animal.url,
@@ -28,12 +29,13 @@ componentDidMount() {
 
 
             });
-        }, console.error)
+        })
+        .catch((err: Error) => this.setState({error: err}));
     }
-    toggleModal =()=>this.setState({showModal: !this.state.showModal})
-    adopt = () => navigate(this.state.url)
+    public toggleModal =()=>this.setState({showModal: !this.state.showModal})
+    public adopt = () => navigate(this.state.url)
 
-    render() {
+    public render() {
         if (this.state.loading) {
             return <h1>Loading...</h1>
         }
@@ -74,7 +76,7 @@ componentDidMount() {
     };
 }
 
-export default function DetailsWithErrorBoundler(props){
+export default function DetailsWithErrorBoundler(props: RouteComponentProps<{id: string}>){
     return(
         <ErrorBoundary>
             <Details {...props}/>

@@ -1,33 +1,47 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
+import {Photo} from '@frontendmasters/pet'
 
-class Carousel extends React.Component{
-    state = {
+interface IProps {
+    media: Photo[]
+
+}
+interface IState {
+    active: number;
+    photos: string[]
+}
+
+class Carousel extends React.Component<IProps, IState>{
+    public state = {
         photos: [],
         active: 0
     };
-static getDerivedStateFromProps({media}){
+public static getDerivedStateFromProps({media}: IProps){
     let photos=['https://placeorg.com/600/600'];
     if(media.length){
         photos = media.map(({large})=> large);
     }
     return {photos};
 }
-handleIndexClick = e => {
-this.setState({
+public handleIndexClick = (e: React.MouseEvent<HTMLElement>) => {
+    if (!(e.target instanceof HTMLElement)){
+        return;
+    }
+    if(e.target.dataset.index){
+
+ this.setState({
     active: +e.target.dataset.index 
 }
 
 )
-}
-render(){
+}};
+public render(){
     const{photos, active} = this.state;
     return (
         <div className="carousel">
             <img src={photos[active]} alt="animal"/>
             <div className="carousel-smaller">
                 {this.props.media.map((photo, index) => (
-// eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
                     <img
                     key={photo.large}
                     onClick={this.handleIndexClick}

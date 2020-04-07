@@ -2,7 +2,6 @@
 import React, {useState} from 'react';
 import {Link} from '@reach/router';
 import {css} from '@emotion/core';
-import colors from './colors'
 
 const NavBar =  () =>{
     const [padding] = useState(15);
@@ -10,7 +9,7 @@ const NavBar =  () =>{
    return (<header
     css={
         css`
-        background-color: ${colors.secondary};
+        background-color: pink;
         padding:${padding}px;
         `
     }>
